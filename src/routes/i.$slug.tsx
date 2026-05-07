@@ -58,9 +58,12 @@ export const Route = createFileRoute("/i/$slug")({
       .eq("is_published", true)
       .maybeSingle();
     if (error || !data) throw notFound();
-    // best-effort view increment
-    void supabase.rpc as never; // no-op
-    void supabase.from("invitations").update({ view_count: (data.view_count ?? 0) + 1 }).eq("id", data.id);
+    // best-effort view increment (fire and forget)
+    void supabase
+      .from("invitations")
+      .update({ view_count: (data.view_count ?? 0) + 1 })
+      .eq("id", data.id)
+      .then(() => undefined);
     return data as Invitation;
   },
   component: InvitePage,
