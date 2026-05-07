@@ -14,16 +14,191 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      invitations: {
+        Row: {
+          bride_family: string | null
+          bride_name: string
+          category: Database["public"]["Enums"]["event_category"]
+          contact_phone: string | null
+          cover_image_url: string | null
+          created_at: string
+          event_date: string | null
+          event_time: string | null
+          event_title: string | null
+          groom_family: string | null
+          groom_name: string
+          id: string
+          is_published: boolean
+          maps_url: string | null
+          message: string | null
+          music_enabled: boolean
+          slug: string
+          theme: string
+          updated_at: string
+          user_id: string
+          venue_address: string | null
+          venue_name: string | null
+          view_count: number
+        }
+        Insert: {
+          bride_family?: string | null
+          bride_name: string
+          category?: Database["public"]["Enums"]["event_category"]
+          contact_phone?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          event_date?: string | null
+          event_time?: string | null
+          event_title?: string | null
+          groom_family?: string | null
+          groom_name: string
+          id?: string
+          is_published?: boolean
+          maps_url?: string | null
+          message?: string | null
+          music_enabled?: boolean
+          slug: string
+          theme?: string
+          updated_at?: string
+          user_id: string
+          venue_address?: string | null
+          venue_name?: string | null
+          view_count?: number
+        }
+        Update: {
+          bride_family?: string | null
+          bride_name?: string
+          category?: Database["public"]["Enums"]["event_category"]
+          contact_phone?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          event_date?: string | null
+          event_time?: string | null
+          event_title?: string | null
+          groom_family?: string | null
+          groom_name?: string
+          id?: string
+          is_published?: boolean
+          maps_url?: string | null
+          message?: string | null
+          music_enabled?: boolean
+          slug?: string
+          theme?: string
+          updated_at?: string
+          user_id?: string
+          venue_address?: string | null
+          venue_name?: string | null
+          view_count?: number
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      rsvps: {
+        Row: {
+          created_at: string
+          guest_count: number
+          guest_name: string
+          guest_phone: string | null
+          id: string
+          invitation_id: string
+          message: string | null
+          status: Database["public"]["Enums"]["rsvp_status"]
+        }
+        Insert: {
+          created_at?: string
+          guest_count?: number
+          guest_name: string
+          guest_phone?: string | null
+          id?: string
+          invitation_id: string
+          message?: string | null
+          status: Database["public"]["Enums"]["rsvp_status"]
+        }
+        Update: {
+          created_at?: string
+          guest_count?: number
+          guest_name?: string
+          guest_phone?: string | null
+          id?: string
+          invitation_id?: string
+          message?: string | null
+          status?: Database["public"]["Enums"]["rsvp_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rsvps_invitation_id_fkey"
+            columns: ["invitation_id"]
+            isOneToOne: false
+            referencedRelation: "invitations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      event_category:
+        | "engagement"
+        | "wedding"
+        | "reception"
+        | "nikah"
+        | "walima"
+        | "mehendi"
+        | "save_the_date"
+      rsvp_status: "yes" | "no" | "maybe"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +325,18 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      event_category: [
+        "engagement",
+        "wedding",
+        "reception",
+        "nikah",
+        "walima",
+        "mehendi",
+        "save_the_date",
+      ],
+      rsvp_status: ["yes", "no", "maybe"],
+    },
   },
 } as const
